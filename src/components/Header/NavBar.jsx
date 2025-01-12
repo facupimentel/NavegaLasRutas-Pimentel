@@ -21,6 +21,8 @@ const NavBar = ({totalProductos}) => {
 
             <li><NavLink to="/" className={({isActive})=>(isActive ? 'active' : '')}>Inicio</NavLink></li>
             <li><NavLink to="/productos" className={({isActive})=>(isActive ? 'active' : '')}>Productos</NavLink></li>
+            <li><NavLink to="/nosotros" className={({isActive})=>(isActive ? 'active' : '')}>Nosotros</NavLink></li>
+            <li><NavLink to="/contactos" className={({isActive})=>(isActive ? 'active' : '')}>Contactos</NavLink></li>
           </ul>
 
           <CartWidget totalProductos={totalProductos} />

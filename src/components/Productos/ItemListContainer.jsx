@@ -1,64 +1,29 @@
 import { useState } from "react";
 import products from "../../js/productos";
+import { Link } from "react-router-dom";
 
-// eslint-disable-next-line react/prop-types
-const ItemListContainer = ({ inicial = 1, agregarAlCarrito }) => {
-  const [counts, setCounts] = useState(
-    products.reduce((acc, producto) => {
-      acc[producto.id] = inicial;
-      return acc;
-    }, {})
-  );
 
-  const incrementar = (id) => {
-    setCounts((prevCounts) => ({
-      ...prevCounts,
-      [id]: prevCounts[id] + 1,
-    }));
-  };
-
-  const decrementar = (id) => {
-    setCounts((prevCounts) => ({
-      ...prevCounts,
-      [id]: prevCounts[id] - 1,
-    }));
-  };
+const ItemListContainer = () => {
+  
 
   return (
-    <div>
-      <h1>Bienvenidos a nuestra Tienda Online</h1>
-      <article className="productos">
-        {products.map((producto) => (
-          <div key={producto.id} className="producto">
-            <img src={producto.imagen} alt={producto.nombre} />
-            <h2>{producto.nombre}</h2>
-            <p>Precio: ${producto.precio}</p>
-            <div className="botonera">
-              <button
-                className="restar"
-                onClick={() => decrementar(producto.id)}
-                disabled={counts[producto.id] === 1}
-              >
-                -
-              </button>
-
-              <span>{counts[producto.id]}</span>
-
-              <button
-                className="sumar"
-                onClick={() => {
-                  incrementar(producto.id);
-                }}
-                disabled={counts[producto.id] === 10}
-              >
-                +
-              </button>
+    <>
+      <section className="sec-productos" >
+        <div class="texto">
+          <h1>Bienvenidos a nuestra Tienda Online</h1>
+        </div>
+        <article className="productos">
+          {products.map((producto) => (
+            <div key={producto.id} className="producto">
+              <Link to={`/detalle/${producto.id}`}>
+                <img src={producto.imagen} alt={producto.nombre} />
+              </Link>
+              <h2>{producto.nombre}</h2>
             </div>
-            <button onClick={agregarAlCarrito}>Comprar</button>
-          </div>
-        ))}
-      </article>
-    </div>
+          ))}
+        </article>
+      </section>
+    </>
   );
 };
 
