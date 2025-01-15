@@ -1,43 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import products from "../../js/productos";
 import { useParams } from "react-router-dom";
 
+const fetchProductos = (id) =>{
+  return new Promise((resolve, reject) =>{
+    setTimeout(()=>{
+      const producto = products.find((p) => p.id === parseInt(id))
+      if(producto){
+        resolve(producto)
+      } else {
+        reject("producto no encontrado")
+      }
+    }, 1000)
+  }) 
+}
 
-const ItemDetailContainer = ({ inicial = 1, agregarAlCarrito }) => {
-  const [counts, setCounts] = useState(
-    products.reduce((acc, producto) => {
-      acc[producto.id] = inicial;
-      return acc;
-    }, {})
-  );
 
-  const [selectProducto, setSelectProducto] = useState(null);
-
-  const handleProductoClick = (producto) => {
-    setSelectProducto(producto);
-  };
-
-  const incrementar = (id) => {
-    setCounts((prevCounts) => ({
-      ...prevCounts,
-      [id]: prevCounts[id] + 1,
-    }));
-  };
-
-  const decrementar = (id) => {
-    setCounts((prevCounts) => ({
-      ...prevCounts,
-      [id]: prevCounts[id] - 1,
-    }));
-  };
-
-  const volverMenu = () => {
-    setSelectProducto(null);
-  };
-
+const ItemDetailContainer = ({ agregarAlCarrito }) => {
+  
   const { id } = useParams();
-  const producto = products.find((p) => p.id === parseInt(id));
+  const [cantidad, setCantidad] = useState(1)
+
+  const incrementar = () => setCantidad((prev) => Math.min(prev + 1, 10))
+  const decrementar = () => setCantidad((prev) => Math.max(prev - 1, 10));
+
+
+  const [producto, setProducto] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(()=>{
+    setCargando(true)
+    fetchProductos(id)
+      .then((data)=>{
+        setProducto(data)
+        setError(null)
+      })
+      .catch((error)=>{
+        setProducto(null)
+        setError(error)
+      })
+      .finally(()=>{
+        setCargando(false)
+      })
+  }, [id])
+
+
+  if(cargando){
+    return <p style={{
+      textAlign:"center"
+    }}>Cargando producto</p>
+  }
+
+  if(error){
+    return <p style={{ color: "red" }}>{error}</p>;
+  }
+
+
+
+
 
   return (
     <>
@@ -51,27 +73,25 @@ const ItemDetailContainer = ({ inicial = 1, agregarAlCarrito }) => {
         <div className="botonera">
           <button
             className="restar"
-            onClick={() => decrementar(producto.id)}
-            disabled={counts[producto.id] === 1}
+            onClick={decrementar}
+            disabled={cantidad === 1}
           >
             {" "}
             -
           </button>
 
-          <span>{counts[producto.id]}</span>
+          <span>{cantidad}</span>
 
           <button
             className="sumar"
-            onClick={() => {
-              incrementar(producto.id);
-            }}
-            disabled={counts[producto.id] === 10}
+            onClick={incrementar}
+            disabled={cantidad === 10}
           >
             {" "}
             +
           </button>
         </div>
-        <button onClick={agregarAlCarrito} className="btn-comprar">
+        <button onClick={()=>agregarAlCarrito(cantidad)} className="btn-comprar">
           Comprar
         </button>
       </div>

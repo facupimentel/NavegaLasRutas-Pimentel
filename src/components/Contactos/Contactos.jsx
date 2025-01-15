@@ -29,15 +29,56 @@ export const Contactos = () => {
         </p>
       </article>
 
-      <div className="logos">
-        {logos.map((logo) => (
-          <div key={logo.id}>
-            <Link to={`/contactos/${logo.url}`}>
-              <img src={logo.src} alt={logo.src} />
-            </Link>
-          </div>
-        ))}
-      </div>
+      <article className="formulario">
+        <form action="" className="formulario">
+          <input
+            className="controles"
+            type="text"
+            name="nombre"
+            id="nombre-apellido"
+            placeholder="Nombre y Apellido"
+          />
+          <input
+            className="controles"
+            type="text"
+            name=""
+            id="edad"
+            placeholder="Edad"
+          />
+          <input
+            className="controles"
+            type="text"
+            name=""
+            id="peso"
+            placeholder="Peso Corporal"
+          />
+
+          <textarea
+            className="controles"
+            name=""
+            id=""
+            cols="30"
+            rows="5"
+            placeholder="Contanos brevemente tus metas y objetivos"
+          ></textarea>
+
+          <input
+            className="controles"
+            type="text"
+            name=""
+            id="correo"
+            placeholder="Correo Electronico"
+          />
+          <input
+            className="controles"
+            type="text"
+            name=""
+            id="tel"
+            placeholder="Telefono de Contacto"
+          />
+          <input className="boton" type="button" value="ENVIAR" />
+        </form>
+      </article>
     </main>
   );
 };

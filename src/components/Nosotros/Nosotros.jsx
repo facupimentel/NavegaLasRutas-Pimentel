@@ -27,13 +27,9 @@ const Nosotros = () => {
       <article class="texto">
         <h1>Sobre Nosotros</h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius delectus
-          natus incidunt accusantium eaque sunt enim quasi doloremque sed
-          repudiandae est in recusandae nihil, fugiat, labore cumque vero
-          laborum iusto. Lorem ipsum dolor sit amet consectetur adipisicing
-          elit. Maiores illum accusantium ipsum nemo, officiis est quia deserunt
-          nam reiciendis. Odio inventore ex nam sit itaque delectus eaque ab eos
-          voluptatibus?
+          Te presentamos a los entrenadores de nuestra academia que te ayudaran
+          en tu entrenamiento dependiendo la disciplina que te especialices, llevandote
+          a tu maximo nivel deportivo para cumplir tus objetivos. 
         </p>
       </article>
 
