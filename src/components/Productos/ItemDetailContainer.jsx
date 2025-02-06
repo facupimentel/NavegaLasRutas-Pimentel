@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import products from "../../js/productos";
 import { useParams } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import ItemCount from "./ItemCount";
 
 const fetchProductos = (id) =>{
   return new Promise((resolve, reject) =>{
@@ -17,14 +19,15 @@ const fetchProductos = (id) =>{
 }
 
 
-const ItemDetailContainer = ({ agregarAlCarrito }) => {
+const ItemDetailContainer = () => {
+
+  const { addCarrito} = useCart()
   
+
   const { id } = useParams();
   const [cantidad, setCantidad] = useState(1)
 
-  const incrementar = () => setCantidad((prev) => Math.min(prev + 1, 10))
-  const decrementar = () => setCantidad((prev) => Math.max(prev - 1, 10));
-
+  
 
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
@@ -65,37 +68,17 @@ const ItemDetailContainer = ({ agregarAlCarrito }) => {
     <>
       <div className="detalle-producto">
         <h2 key={producto.id}>ID: {id ? id : ""}</h2>
-        <img src={producto.imagen} alt="" />
-        <h2>{producto.nombre}</h2>
-        <p>Precio: ${producto.precio}</p>
-        <p>{producto.descripcion}</p>
+        <img src={producto.image} alt="" />
+        <h2>{producto.name}</h2>
+        <p>Precio: ${producto.price}</p>
+        <p>{producto.description}</p>
 
-        <div className="botonera">
-          <button
-            className="restar"
-            onClick={decrementar}
-            disabled={cantidad === 1}
-          >
-            {" "}
-            -
-          </button>
-
-          <span>{cantidad}</span>
-
-          <button
-            className="sumar"
-            onClick={incrementar}
-            disabled={cantidad === 10}
-          >
-            {" "}
-            +
-          </button>
-        </div>
-        <button onClick={()=>agregarAlCarrito(cantidad)} className="btn-comprar">
-          Comprar
+        <ItemCount cantidad={cantidad} setCantidad={setCantidad} />
+        
+        <button onClick={()=>addCarrito(producto, cantidad)} className="btn-comprar">
+          Agregar al carrito
         </button>
       </div>
-      ))
     </>
   );
 };

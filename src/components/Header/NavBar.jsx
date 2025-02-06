@@ -1,10 +1,28 @@
 import { Link, NavLink } from "react-router-dom"
 import logo from "../../img/header/logo1.png"
-import CartWidget from "./CartWidget"
+import Cart from "./Cart";
+import { useUser } from "../../context/UserContext";
 
 
 
 const NavBar = ({totalProductos}) => {
+
+  const {user, login, logout} = useUser()
+  console.log("user: ", user);
+  
+
+  const handleLoginLogout = () =>{
+    if(user?.isLoggedIn){
+      logout()
+      console.log("usuario deslogueado")
+    } else {
+      login({name:"Facundo", isLoggedIn: true})
+      console.log("usuario logueado");
+      
+    }
+  }
+
+
 
   return (
     <>
@@ -18,7 +36,19 @@ const NavBar = ({totalProductos}) => {
             <li><NavLink to="/contactos" className={({isActive})=>(isActive ? 'active' : '')}>Contactos</NavLink></li>
           </ul>
 
-          <CartWidget totalProductos={totalProductos} />
+          <Cart totalProductos={totalProductos} />
+
+          <button
+            style={{
+              width:"63px",
+              marginRight:"30px"
+            }}
+            onClick={handleLoginLogout}
+          >
+            {user?.isLoggedIn ? "logout" : "login"}
+          </button>
+          
+
         </nav>
       </header>
     </>

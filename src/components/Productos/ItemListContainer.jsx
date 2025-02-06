@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import products from "../../js/productos";
 import { Link } from "react-router-dom";
+import useFetch from "../../Hooks/useFetch";
 
 
 
@@ -20,34 +21,49 @@ const fetchDatos = () =>{
 
 const ItemListContainer = () => {
 
-  const [cargando, setCargando] = useState("Cargando...")
+  const {data, loading, error} = useFetch('ProductosVoltex')
+
+  // useEffect(()=>{
+  //   console.log("data obtenida: ", data);
+    
+  // })
+
+  // const [cargando, setCargando] = useState("Cargando...")
   
-  useEffect(()=>{
-    fetchDatos()
-      .then((response)=> setCargando(response))
-      .then((data)=> window.location.href = `/detalle/${id}`)
-  })
+  // useEffect(()=>{
+  //   fetchDatos()
+  //     .then((response)=> setCargando(response))
+  //     .then((data)=> window.location.href = `/detalle/${id}`)
+  // })
 
   
   return (
     <>
       <section className="sec-productos">
-        <div class="texto">
+        <div className="texto">
           <h1>Bienvenidos a nuestra Tienda Online</h1>
         </div>
 
-
-
-        <article className="productos">
-          {products.map((producto) => (
-            <div key={producto.id} className="producto">
-              <Link to={`/detalle/${producto.id}`}>
-                <img src={producto.imagen} alt={producto.nombre} onClick={()=> handleProductoClick(producto.id)}/>
-              </Link>
-              <h2>{producto.nombre}</h2>
-            </div>
-          ))}
-        </article>
+        {
+        loading ? (
+          <p>{error}</p>
+        ) : (
+          <article className="productos">
+            {
+            data.map((producto) => (
+              <div key={producto.id} className="producto">
+                <Link to={`/detalle/${producto.id}`}>
+                  <img
+                    src={producto.image}
+                    alt={producto.name}
+                    onClick={() => handleProductoClick(producto.id)}
+                  />
+                </Link>
+                <h2>{producto.name}</h2>
+              </div>
+            ))}
+          </article>
+        )}
       </section>
     </>
   );
